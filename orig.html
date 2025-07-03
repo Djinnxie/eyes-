@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+
+    <!-- <link rel="stylesheet" href="style.css"> -->
+     <style>
+
+body{
+
+    background-color: black;
+    margin: 0;
+    padding:0;
+}
+.container {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding:0;
+    outline: solid 1px black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .inner{
+    width:300px;
+    height:300px;
+    /* border:2px solid white; */
+    text-align: center;
+    display: flex;
+    /* justify-content: space-around; */
+    align-items: center;
+    text-align: center;
+  }
+  .inner svg{
+    display:inline-block;
+  }
+        path {
+            fill: red;
+            display: none;
+        }
+        #rightEye{
+          transform: scaleX(-1);
+        }
+     </style>
+</head>
+
+<body>
+    <div class="container">
+    <div class="inner">
+
+    <svg id="leftEye" xmlns="http://www.w3.org/2000/svg" width="90" height="90">
+        <g transform="translate(-20.386929,-58.69985)">
+            <path id="base"
+                d="m 24.033694,42.910544 c 0,0 3.861997,22.636977 4.96766,29.773434 0.04998,7.960063 2.369779,5.188203 5.067999,8.717334 -1.04e-4,19.739818 10.829373,35.742138 24.188187,35.742008 13.358815,1.3e-4 24.188292,-16.00219 24.188188,-35.742008 C 82.444761,62.501008 59.663184,58.974883 46.895849,57.833481 Z" />
+            <path id="angry"
+                d="m 20.386929,58.699849 c 0,0 6.920263,12.36902 11.89595,17.251168 7.409839,2.454378 4.773567,8.658243 5.067999,8.717334 -1.04e-4,19.739819 9.720707,7.455153 23.375215,7.175406 14.769732,3.286602 26.398689,16.989683 25.00116,-7.175406 C 85.726286,65.768047 62.944709,62.241922 50.177374,61.10052 Z" />
+        </g>
+    </svg>
+    </div>
+    </div>
+    <button class="emote" data-emotion="base">base</button>
+    <button class="emote" data-emotion="angry">angry</button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://unpkg.com/flubber@0.3.0"></script>
+    <script>
+        // var pathStrings = Array.from(document.querySelectorAll("path")).map(d => d.getAttribute("d"));
+        var emotions = { list: {}, array: [] };
+        var rawEmotes = [...document.querySelectorAll("path")];
+        rawEmotes.forEach(obj => {
+            let id = obj.getAttribute("id");
+            emotions.list[id] = { d: obj.getAttribute("d") };
+            emotions.array.push(id);
+        })
+        emotions.default = "base";
+        emotions.current = emotions.default;
+        // Remove all the paths except the first
+        d3.selectAll("path")
+            .filter(function (d, i) { return i; })
+            .remove();
+
+        d3.select("path")
+            .style("display", "block")
+        //   .call(animate);
+
+        $(".emote").click(function(){
+            let emotion = $(this).attr("data-emotion")
+            console.log(emotion);
+        // document.getElementById("emote").onclick = function (e) {
+            // d3.select("#leftEye path").call(animate, { target: emotion })
+            d3.select("#rightEye path").call(animate, { target: emotion })
+        })
+
+
+        rightEye = $("#leftEye").clone().attr("id","rightEye");
+        $(".inner").append(rightEye)
+        function animate(sel, dat) {
+            let target = dat.target;
+            var start = emotions.list[emotions.current].d
+            end = emotions.list[target].d
+            emotions.current = target;
+
+            //   pathStrings.push(start);
+
+            sel
+                .datum({ start, end })
+                .transition()
+                .duration(1500)
+                .attrTween("d", function (d) {
+                    return flubber.interpolate(d.start, d.end, { maxSegmentLength: 0.1 })
+                })
+            // .on("end", function() {
+            //   sel.call(animate);
+            // });
+        }
+    </script>
