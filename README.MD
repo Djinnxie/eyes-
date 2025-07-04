@@ -29,6 +29,10 @@ node i express-SSE
 - change the id to whatever you want your expression to be called
 - change the data-button to whatever you want to appear on the button
 
+### Controlling
+if you are using the nodejs version, you can control it by navigating to `http://[local ip]:[port]/API/set/[emotion]`   
+eg: `http://127.0.0.1:3000/API/set/shock`
+
 ### Settings
 settings are at the top of `public/main.js`
 
