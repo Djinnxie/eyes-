@@ -3,7 +3,7 @@
 
 An HTML-based project for animating expressions by morphing between SVGs. it can be run with nodejs for controlling it via a web endpoint or standalone
 
-![glowing red eyes](Doc/img/eyes.png)
+![glowing red eyes](Doc/img/eyes.gif)
 
 ## Setup
 - clone the repository
