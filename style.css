@@ -9,7 +9,7 @@ body {
 .container {
     width: 100vw;
     height: 100vh;
-    margin: 0;
+    margin: 80px 0 0 0;
     padding: 0;
     outline: solid 1px black;
     display: flex;
@@ -71,4 +71,5 @@ path {
     left: 20px;
     top: 20px;
     z-index:10;
+    /* display:none; */
 }

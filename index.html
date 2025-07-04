@@ -87,7 +87,9 @@
         d3.select("path")
             .style("display", "block")
         //   .call(animate);
-
+        let changeTo = function(emotion){
+            animate(['#leftEye','#rightEye'],emotion)
+        }
         $(".emote").click(function(){
             let emotion = $(this).attr("data-emotion")
             // d3.select("#leftEye path").call(animate, { target: emotion })
