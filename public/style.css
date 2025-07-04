@@ -58,9 +58,6 @@ path {
     fill: #bc304b;
     display: none;
 }
-.eye{
-
-}
 
 #rightEye {
     transform: scaleX(-1);
@@ -76,6 +73,6 @@ path {
 .hidden{
     display:none;
 }
-.hideControls{
+.fullscreen{
     margin-left:30px;
 }

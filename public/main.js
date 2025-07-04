@@ -1,10 +1,13 @@
 var settings = {
-    nodejs:true,
+    nodejs:false,
+    color:0,
     blinking:true,
     showControls:true,
     randomEmotions:false,
     randomEmotionList:"all",
     clickOnEyes:true,
+    maskOpacity:100,
+    columnOpacity:120
 }
 var emotions = {
     list: {}, array: [],
@@ -27,6 +30,7 @@ var emotions = {
             controlButton.text($(this).attr("data-button"))
             $("#controls").append(controlButton);
         })
+        $("#controls").append($("<button class='fullscreen'>fullscreen</button>"))
         $("#controls").append($("<button class='hideControls'>hide</button>"))
 
         this.blink.check()
@@ -56,6 +60,8 @@ var emotions = {
     }
 };
 var init = function(){
+    // innerFilter = ["drop-shadow(rgb(255, 0, 0) 0px 0px 8.35729px)", "blur(0.394661px)"]
+    containerFilter = $(".crt").css("filter").split(" ");
     if(!settings.showControls) $("#controls").hide();
     emotions.init();
 
@@ -65,6 +71,11 @@ var init = function(){
         emotions.list[id] = { d: obj.getAttribute("d") };
         emotions.array.push(id);
     })
+    if(settings.color){
+        containerFilter.unshift("hue-rotate("+settings.color+"deg)");
+        // $(".container").css("filter","hue-rotate("+settings.color+"deg)");
+        $(".container").css("filter",containerFilter.join(" "));
+    }
 }
 init();
 
@@ -83,6 +94,9 @@ if(settings.nodejs){
 
 $('.hideControls').click(function () {
     $('#controls').hide("slow").then().addClass("hidden");
+})
+$('.fullscreen').click(function () {
+    fullscreen();
 })
 if(settings.clickOnEyes){
     $('#leftEye').on("click", function (e) {
@@ -137,28 +151,25 @@ function animate(selectors, target) {
 }
 
 
-let tim = 0;
+let timer = 0;
 let cycles = 0;
 
-const t = d3.interval((elapsed) => {
+const t = d3.interval(() => {
     if (emotions.blink.enabled) {
-        if (tim > 70) $('.container:not(.blink)').addClass("blink");
-        if (tim <= 5) $('.container.blink').removeClass("blink");//
+        if (timer > 70) $('.container:not(.blink)').addClass("blink");
+        if (timer <= 5) $('.container.blink').removeClass("blink");//
     }
-    tim++
-    ti = Math.floor(tim / 2)
-    if (ti > 20) e = 20 - (ti - 20)
-    else e = ti
-    // if(tim<0)tim=1-tim
-    // console.log(e);
-    maskOpacity(e / 100 + 0.1)
-    changeOpacity(e / 120 + 0.1)
-    if (tim >= 80) {
-        tim = 0;
+    timer++
+    timerDiv = Math.floor(timer / 2)
+    if (timerDiv > 20) crtTimer = 20 - (timerDiv - 20)
+    else crtTimer = timerDiv
+    maskOpacity(crtTimer / settings.maskOpacity + 0.1)
+    changeOpacity(crtTimer / settings.columnOpacity + 0.1)
+    if (timer >= 80) {
+        timer = 0;
         cycles++;
         if (cycles % 2 == 0 && emotions.random.enabled) {
             let ran = emotions.random.Get();
-            console.log("random", ran)
             changeTo(ran);
         }
     }
