@@ -1,0 +1,136 @@
+html {
+    background-color: black;
+  }
+  
+  .scanlines {
+      z-index: 3;
+     opacity: .5;
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 110%;
+      height: 110%;
+      background-attachment: fixed;
+  }
+  
+  /* Do not enable RGB-bloom and  R,G and B at the same time  */
+  
+  
+  /* RGB Bloom allows for a brighter image with blending between phosphors*/
+  /* disabled until functional */
+  .RGB-bloom {
+    z-index: 4;
+    background: url(./assets/img/RGBG.png);
+    filter: contrast(100) brightness(10)  blur(1px);
+    mix-blend-mode: darken;
+    }
+  
+  /* individual phosphors. Enable these for the best phosphor seperation but with darker image */
+  .R {
+    z-index: 4;
+    background: url(./assets/img/R.png);
+    image-rendering: pixelated;
+    mix-blend-mode: darken;
+    
+  }
+  
+  .G {
+    z-index: 4;
+    background: url(./assets/img/G.png);
+    image-rendering: pixelated;
+    mix-blend-mode:darken;
+  
+  }
+  
+  .B {
+    z-index: 4;
+    background: url(./assets/img/B.png);
+    image-rendering: pixelated;
+    mix-blend-mode:darken;
+  
+  }
+  
+  .mask {
+    image-rendering: pixelated;
+      z-index: 1;
+      opacity: .3;
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 110%;
+      height: 110%;
+    background: url(./assets/img/mask.png);
+  
+  }
+  
+  .flicker {
+    z-index: 99;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 110%;
+    height: 110%;
+    opacity: 0;
+    mix-blend-mode:lighten;
+    background-color: rgb(255, 255, 255);
+    animation: flickerEffect 1ms;
+    animation-iteration-count: infinite;
+  }
+  
+  @keyframes flickerEffect {
+    from {
+      opacity: .015;
+      filter: blur(100px);
+    }
+  }
+  
+  
+  .test-image{
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    background: url(./assets/img/image0.png) no-repeat center/cover;
+  }
+  
+  .crt {
+      filter:  brightness(1.1) saturate(140%) ;
+  }
+  
+  /* this must come after the mask and the phosphors to render new bk size */
+  .scanlines, .mask{
+    background-size: 12px 12px;
+  }
+  
+  /*---------------------CONTROL CSS---------------------*/
+  #controlContainer {
+    position: absolute;
+    width: 100%;
+    isolation: isolate;
+  z-index: 999999;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  }
+  
+  .btn, .sizeDisplay{
+    margin-right: 5px;
+    color: black;
+    font-size: 1vw;
+    width:8vw;
+    height: 4vw;
+    z-index: 999999;
+  }
+  
+  .btn:hover{
+    color: rgb(88, 76, 76);
+  }
+  .sizeDisplay{
+    width:6vw;
+    height: 1.2vw;
+    font-size: 1vw;
+    background-color: white;
+    color: black;
+  }
+ .phosphorsContainer{
+    pointer-events: none;
+ } 

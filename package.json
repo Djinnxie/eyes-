@@ -1,0 +1,23 @@
+{
+  "name": "eyes-",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Djinnxie/eyes-.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Djinnxie/eyes-/issues"
+  },
+  "homepage": "https://github.com/Djinnxie/eyes-#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "express-sse": "^1.0.0"
+  }
+}
