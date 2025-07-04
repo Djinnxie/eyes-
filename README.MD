@@ -3,6 +3,8 @@
 
 An HTML-based project for animating expressions by morphing between SVGs. it can be run with nodejs for controlling it via a web endpoint or standalone
 
+![glowing red eyes](Doc/img/eyes.png)
+
 ## Setup
 - clone the repository
 #### standalone version
@@ -31,7 +33,7 @@ node i express-SSE
 settings are at the top of `public/main.js`
 
 **nodejs**[false] - enables nodejs  
-**color**[0] - rotates the hue of the eyes. number between 0-360
+**color**[0] - rotates the hue of the eyes. number between 0-360   
 **blinking**[true] - enabled blinking  
 **showControls**[true] - shows buttons for changing emotes
 **randomEmotions**[false] - randomly cycle through emotions      
