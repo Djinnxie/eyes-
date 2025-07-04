@@ -3,7 +3,7 @@ body {
     background-color: black;
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .container {
@@ -72,4 +72,10 @@ path {
     top: 20px;
     z-index:10;
     /* display:none; */
+}
+.hidden{
+    display:none;
+}
+.hideControls{
+    margin-left:30px;
 }
