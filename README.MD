@@ -57,6 +57,10 @@ settings are at the top of `public/main.js`
     - chromatic abboration? 
     - crt bevel?
 - update docs, especially `adding svgs`
+- morphing into a singular icon
+- extra marks - eg: blushing, frowning
+- text scrolling
+- display arbitrary pictures
 
 
 
