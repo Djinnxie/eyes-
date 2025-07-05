@@ -7,7 +7,11 @@ var settings = {
     randomEmotionList:"all",
     clickOnEyes:true,
     maskOpacity:100,
-    columnOpacity:120
+    columnOpacity:120,
+    blinkInterval:50,
+    blinkDuration:[1000,2500],
+    blinkPlusMinus:10,
+    blinkList:['base'] 
 }
 var emotions = {
     list: {}, array: [],
@@ -59,11 +63,87 @@ var emotions = {
         }
     }
 };
+
+let blink = {
+    setDuration:function(){
+        let rand = 0;
+       if(settings.blinkPlusMinus){
+        rand = (Math.random()*(settings.blinkPlusMinus*2))-settings.blinkPlusMinus;
+       } 
+       this.interval = Math.floor(settings.blinkInterval+rand);
+    //    console.log("blink duration",rand,this.interal);
+    },
+    init:function(){
+        this.doCheck();
+        this.enabled=settings.blinking;
+    //    this.list = settings.blinkList; 
+        this.setDuration();
+    },
+    run:function(on=true){
+        data={update:false,
+        };
+        // console.log(settings.blinkDuration[0],"blink")
+        // TODO: fix blink duration
+        if(on){ 
+            emotion = 'blink'
+            data.callback={
+                func:function(p){
+                    console.log("callback")
+                    blink.state=2;
+                    blink.run(false);
+                },params:{a:"A"}
+            }
+            data.duration=settings.blinkDuration[0];
+        }else{
+            emotion=emotions.current
+            data.duration=settings.blinkDuration[1];
+           this.setDuration(); 
+        };
+        animate(['#leftEye','#rightEye'],emotion,data);
+   },
+    doCheck: function () {
+        if(settings.blinking)
+            this.enabled =  $.inArray(emotions.current, this.list) != -1;
+        else
+            this.enabled=false
+        return this.enabled;
+    },
+   step:function(){
+    // console.log(this.timer)
+    if (!this.enabled) {
+        return;
+    }
+    if (this.timer <= 2 && this.state==0 ){
+        this.run(true);
+        this.state=1;
+    } 
+    // if (this.timer >= 2 && this.state==1 ){
+    //     this.run(false);
+    //     this.state=2;
+    // } 
+    this.timer++;
+   if(this.timer>this.interval){
+        this.timer=0;
+        this.state=0; 
+   } 
+
+   },
+   check:function(){
+
+   } ,
+   state:0,
+   timer:0,
+   interval:0,
+   enabled:true,
+   list:['base']
+    
+}
 var init = function(){
     // innerFilter = ["drop-shadow(rgb(255, 0, 0) 0px 0px 8.35729px)", "blur(0.394661px)"]
     containerFilter = $(".crt").css("filter").split(" ");
     if(!settings.showControls) $("#controls").hide();
     emotions.init();
+    blink.init();
 
     var rawEmotes = [...document.querySelectorAll("path")];
     rawEmotes.forEach(obj => {
@@ -118,34 +198,52 @@ let changeTo = function (emotion, eye = 'both') {
     let eyes = { left: ['#leftEye'], right: ['#rightEye'], both: ['#leftEye', '#rightEye'] }
     let e = eyes[eye]||eyes["both"];
     if(!emotions.validate(emotion)) return -1;
-    animate(e, emotion)
+    animate(e, emotion,{duration:2500})
     return 0;
 }
 
+
 $(".emote").click(function () {
     let emotion = $(this).attr("data-emotion")
-    animate(['#leftEye', '#rightEye'], emotion)
+    // animate(['#leftEye', '#rightEye'], emotion)
+    changeTo(emotion)
 })
 
 
 rightEye = $("#leftEye").clone().attr("id", "rightEye");
 $(".inner").append(rightEye)
-function animate(selectors, target) {
+animateDefaults = {
+    duration:1500,
+    update:true,
+    callback:{func:function(p){console.log("blank")},params:{}}
+}
+function animate(selectors, target,dat={}) {
+    dat = $.extend({},animateDefaults,dat);
+    console.log('>>animate',target,dat)
+//     data.dutation=dat.duration||2500;
+//     data.update=dat.update||true;
+// //    data = dat; 
+    // console.log('>>animate',dat)
     var start = emotions.list[emotions.current].d
     end = emotions.list[target].d
-    emotions.current = target;
-    emotions.blink.check();
+    if(dat.update){
+        emotions.current = target;
+        blink.doCheck();
+    }
+    let n = dat.callback.params;
+   let v = dat.callback.func; 
     d3
         .select(".inner")
         .selectAll("path")
         .datum({ start, end })
         .transition()
-        .duration(1500)
+        .duration(dat.duration)
         .ease(d3.easeElasticInOut)
         .attrTween("d", function (d) {
             return flubber.interpolate(d.start, d.end, { maxSegmentLength: 2.1 })
         })
-    // .on("end", function() {
+    .on("end",n => {v(n)});
+    //     function() {
     //   sel.call(animate);
     // });
 }
@@ -153,13 +251,29 @@ function animate(selectors, target) {
 
 let timer = 0;
 let cycles = 0;
+// let blinkState = 0;
+// let blinkTimer=0;
+
 
 const t = d3.interval(() => {
-    if (emotions.blink.enabled) {
-        if (timer > 70) $('.container:not(.blink)').addClass("blink");
-        if (timer <= 5) $('.container.blink').removeClass("blink");//
+    blink.step();
+    if (false&&blink.enabled) {
+        if (blinkTimer <= 2 && blink.state==0 ){
+            blink.run(true);
+            blink.state=1;
+        } 
+        if (blink.timer >= 2 && blink.state==1 ){
+            blink.run(false);
+            blink.state=2;
+        } 
     }
     timer++
+    // blink.timer++;
+    // if(blink.timer>=settings.blinkInterval){
+    //     blink.timer=0;
+    //     blink.state=0;
+        
+    // }
     timerDiv = Math.floor(timer / 2)
     if (timerDiv > 20) crtTimer = 20 - (timerDiv - 20)
     else crtTimer = timerDiv

@@ -39,7 +39,10 @@ body {
     animation-iteration-count: infinite;
     /* mix-blend-mode: overlay; */
 }
+#leftEye{
+    margin-right:20px;
 
+}
 .inner svg {
     display: inline-block;
     /* filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.9)); */

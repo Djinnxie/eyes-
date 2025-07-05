@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="85.698471mm"
+   height="90.284439mm"
+   viewBox="0 0 85.698471 90.284439"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="main.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     showgrid="false"
+     showguides="true"
+     inkscape:zoom="1.0909319"
+     inkscape:cx="276.82755"
+     inkscape:cy="117.33088"
+     inkscape:window-width="1600"
+     inkscape:window-height="843"
+     inkscape:window-x="0"
+     inkscape:window-y="28"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer4"
+     inkscape:pageshadow="2"
+     inkscape:snap-to-guides="false"
+     inkscape:snap-grids="false">
+    <inkscape:page
+       x="0"
+       y="0"
+       width="85.698471"
+       height="90.284439"
+       id="page2"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Layer 6"
+     style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ff0000;fill-opacity:1;stroke-width:0.246608;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
+     transform="translate(-67.764738,-2.8148598)">
+    <path
+       id="rect151-3-5-3"
+       sodipodi:nodetypes="cccccccccccc"
+       inkscape:export-filename="&gt;.svg"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"
+       style="font-variation-settings:normal;display:inline;vector-effect:none;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke-width:0.246608;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000"
+       d="m 87.052797,2.81486 c 1.11135,1.924912 0.727589,-4.61e-4 4.035189,6.13614 l 56.280044,19.512983 c 6.48614,2.248826 8.2119,10.613548 3.14542,15.245835 L 96.494626,93.099296 103.67302,64.464095 c -1.16151,0.133239 0.0794,-1.410219 2.57091,-3.782292 13.06663,-12.44019 11.64772,-26.516892 -4.99515,-33.494982 L 78.536414,17.663893 c -4.07909,0.06644 0.533962,-0.130921 -5.534268,0.06644 L 67.764742,2.81486 Z" />
+  </g>
+</svg>
