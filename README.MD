@@ -68,6 +68,8 @@ settings are at the top of `public/main.js`
 - special crashing/rebooting emote
 - loading emote JSON if running in non-node mode
 - automatic node detection
+- ping arbitrary url on animation complete
+- blinking fallback if no blinking SVG specified
 
 
 
@@ -77,4 +79,5 @@ settings are at the top of `public/main.js`
 - added random shake
 - added json for svgs, multiple sprite sets, dynamic buttons for interface
 - color selection
-- blinking animation
+- better blinking animation
+- random blink amount 

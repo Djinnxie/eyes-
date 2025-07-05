@@ -15,14 +15,20 @@ var generateSprites = function(spriteset){
   let spr = r.root.spriteSets[spriteset];
   let tf = spr.transformation;
   let sprites = spr.sprites;
+  let single = spr.singleSprite;
   let htmlOut = `<g transform="${tf}">\n`;
   sprites.forEach(s =>{
-      htmlOut+=`<path id="${s.id}" data-button="${s.button}"\n d="${s.d}" />\n`;
-      controlsOut+=`<a href="/api/set/${s.id}">${s.button}</a><br/>`
-    })
-    htmlOut += "</g>"
+      htmlOut+=`<path id="${s.id}" class="emote" data-button="${s.button}"\n d="${s.d}" />\n`;
+      controlsOut+=`<a href="/api/set/${s.id}">${s.button}</a><br/>`;
+  })
+  
+     single.forEach(s=>{
+      htmlOut+=`<path id="${s.id}" class="single" data-button="${s.button}"\n d="${s.d}" />\n`;
+      // controlsOut+=`<a href="/api/set/${s.id}">${s.button}</a><br/>`
+     });
+    htmlOut += "</g>";
     // console.log(htmlOut);
-    return {"SVGOUT":htmlOut,"SVGCONTROLS":controlsOut};
+    return {"[SVGOUT]":htmlOut,"SVGCONTROLS":controlsOut};
   }
 // console.log(spriteset)
 // generateSprites(spriteset);

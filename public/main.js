@@ -11,10 +11,14 @@ var settings = {
     blinkInterval:80,
     blinkDuration:[1000,2500],
     blinkPlusMinus:10,
-    blinkList:['base'] 
+    blinkList:['base'],
+    wobble:true,
 }
 var emotions = {
     list: {}, array: [],
+    single:{
+        list:{},array:[]
+    },
     validate:function(emotion){
         return $.inArray(emotion, this.array) != -1
     },
@@ -26,17 +30,21 @@ var emotions = {
         this.random.enabled = settings.randomEmotions;
         if(settings.randomEmotionList=="all") this.random.list = this.array;
         else this.random.list = settings.randomEmotionList;
-
-
         $("#leftEye g path").each(function(){
             let controlButton = $("<button class='emote'></button>");
             controlButton.attr('data-emotion',$(this).attr("id"))
             controlButton.text($(this).attr("data-button"))
-            $("#controls").append(controlButton);
+            // if($(this).hasClass("single")){
+            //     controlButton.addClass("single")
+            // }
+            if(!$(this).hasClass("single")){
+                $("#controls").append(controlButton);
+            } 
         })
         $("#controls").append($("<button class='fullscreen'>fullscreen</button>"))
         $("#controls").append($("<button class='hideControls'>hide</button>"))
         $("#controls").append($("<button class='setColor'>color</button>"))
+        $("#controls").append($("<button class='single'>join</button>"))
 
         this.blink.check()
     },
@@ -83,14 +91,12 @@ let blink = {
     run:function(on=true){
         data={update:false,
         };
-        // console.log(settings.blinkDuration[0],"blink")
         // TODO: fix blink duration
         if(on){ 
             emotion = 'blink'
             data.blink=1;
             data.callback={
                 func:function(p){
-                    console.log("callback")
                     blink.state=2;
                     blink.run(false);
                 },params:{a:"A"}
@@ -112,18 +118,13 @@ let blink = {
         return this.enabled;
     },
    step:function(){
-    // console.log(this.timer)
-    if (!this.enabled) {
+    if (!this.enabled||singleSprite.joined) {
         return;
     }
     if (this.timer <= 2 && this.state==0 ){
         this.run(true);
         this.state=1;
     } 
-    // if (this.timer >= 2 && this.state==1 ){
-    //     this.run(false);
-    //     this.state=2;
-    // } 
     this.timer++;
    if(this.timer>this.interval){
         this.timer=0;
@@ -144,7 +145,7 @@ let blink = {
 var setColor = function(col){
     containerFilter = $(".crt").css("filter").split(" ");
         containerFilter.unshift("hue-rotate("+col+"deg)");
-        console.log(containerFilter.join(" "))
+        // console.log(containerFilter.join(" "))
         $(".container").css({"filter":containerFilter.join(" ")},1500);
 
 }
@@ -157,8 +158,13 @@ var init = function(){
     var rawEmotes = [...document.querySelectorAll("path")];
     rawEmotes.forEach(obj => {
         let id = obj.getAttribute("id");
-        emotions.list[id] = { d: obj.getAttribute("d") };
-        emotions.array.push(id);
+        if($(obj).hasClass("single")){
+            emotions.single.list[id] = { d: obj.getAttribute("d") };
+            emotions.single.array.push(id);
+        }else{
+            emotions.list[id] = { d: obj.getAttribute("d") };
+            emotions.array.push(id);
+        }
     })
     if(settings.color){
         setColor(settings.color)
@@ -204,7 +210,11 @@ d3.selectAll("path")
 d3.select("path")
     .style("display", "block")
 
-let changeTo = function (emotion, eye = 'both') {
+let changeTo = function (emotion, eye = 'both',skipCheck=false) {
+    if(singleSprite.joined){
+        if(!skipCheck)
+            return;
+    } 
     let eyes = { left: ['#leftEye'], right: ['#rightEye'], both: ['#leftEye', '#rightEye'] }
     let e = eyes[eye]||eyes["both"];
     if(!emotions.validate(emotion)) return -1;
@@ -218,23 +228,28 @@ $(".emote").click(function () {
     // animate(['#leftEye', '#rightEye'], emotion)
     changeTo(emotion)
 })
+$("button.single").click(function(){
+    singleSprite.join(); 
+})
+
 
 
 rightEye = $("#leftEye").clone().attr("id", "rightEye");
 $(".inner").append(rightEye)
+// $("#singleInner").css({"width":$("#(")})
+
+
+    singleBox = $("<div id='singleInner'><div class='in'><h1>!</h1></div></div>");
+    // singleBox.hide();
+    $(".inner").append(singleBox);
 animateDefaults = {
     duration:1500,
     update:true,
     blink:0,
-    callback:{func:function(p){console.log("blank")},params:{}}
+    callback:{func:function(p){},params:{}}
 }
 function animate(selectors, target,dat={}) {
     dat = $.extend({},animateDefaults,dat);
-    // console.log('>>animate',target,dat)
-//     data.dutation=dat.duration||2500;
-//     data.update=dat.update||true;
-// //    data = dat; 
-    // console.log('>>animate',dat)
     var start = emotions.list[emotions.current].d
     end = emotions.list[target].d
     if(dat.update){
@@ -244,18 +259,11 @@ function animate(selectors, target,dat={}) {
     let n = dat.callback.params;
    let v = dat.callback.func; 
    if(dat.blink==1){
-    // $("#leftEye").delay(500).animate({"margin-right":"0px"},{duration:500,queue:false});
     $(".eye").delay(700).animate({"margin-top":"15px","margin-right":"15px"},{duration:300,queue:false})
-    // $(".eye").each(function(){
-    // // $(this).animate({"top":"10px"},dat.duration/4)
-    // })
    }else if(dat.blink==2){
-    // $("#leftEye").animate({"margin-right":"20px"},{duration:100,queue:false})
     $(".eye").animate({"margin-top":"5px","margin-right":"17px"},{duration:200,queue:false,complete:function(){
         $(this).animate({"margin-top":"0px","margin-right":"20px"},{duration:700,queue:false})
     }})
-    // $(".eye").animate({"top":"0px"},100);
-    
    }
     d3
         .select(".inner")
@@ -268,37 +276,16 @@ function animate(selectors, target,dat={}) {
             return flubber.interpolate(d.start, d.end, { maxSegmentLength: 2.1 })
         })
     .on("end",n => {v(n)});
-    //     function() {
-    //   sel.call(animate);
-    // });
 }
 
 
 let timer = 0;
 let cycles = 0;
-// let blinkState = 0;
-// let blinkTimer=0;
 
 
 const t = d3.interval(() => {
     blink.step();
-    if (false&&blink.enabled) {
-        if (blinkTimer <= 2 && blink.state==0 ){
-            blink.run(true);
-            blink.state=1;
-        } 
-        if (blink.timer >= 2 && blink.state==1 ){
-            blink.run(false);
-            blink.state=2;
-        } 
-    }
     timer++
-    // blink.timer++;
-    // if(blink.timer>=settings.blinkInterval){
-    //     blink.timer=0;
-    //     blink.state=0;
-        
-    // }
     timerDiv = Math.floor(timer / 2)
     if (timerDiv > 20) crtTimer = 20 - (timerDiv - 20)
     else crtTimer = timerDiv
@@ -314,7 +301,6 @@ const t = d3.interval(() => {
     }
 }, 150);
 function wobble(single=false,loop=true){
-    console.log('wobble')
     let direction=[Math.floor(Math.random()*4)];
     let dirs = ["left","right","top","bottom"];
     let style = {};
@@ -339,8 +325,64 @@ function wobble(single=false,loop=true){
         wobble(single)
     });
 }
-wobble();
-wobble(true);
+if(settings.wobble){
+    wobble();
+    wobble(true);
+}
+let singleSprite = {
+    joined:false,
+    join:function(r=false){
+        // TODO
+        if(emotions.current!="base"){
+            changeTo("base","both",true)
+        } 
+        var start = emotions.list[emotions.current].d
+        var single = emotions.single.list["base"].d;
+        if(singleSprite.joined){
+        $("#singleInner").css({"opacity":0});//,{duration:100});
+        interpolator = flubber.separate(single,[start,start], { single: true });
+        d3.select(".inner")
+        .selectAll("path")
+        .datum({start,start})
+        .transition()
+        .duration(500)
+        .attrTween("d", function() { return interpolator; }) 
+        d3.select(".inner")
+        .selectAll("g")
+        .transition()
+        .duration(1500)
+        .attr("transform", "translate(-69.236386,-2.8148599)" )
+        d3.select("#leftEye")
+        .transition()
+        .duration(500)
+        .style("margin-right","20px")
+        $("#rightEye").animate({"opacity":100},500)
+        singleSprite.joined = false;
+    }else{
+        d3.select(".inner")
+        .selectAll("g")
+        .transition()
+        .duration(500)
+        .attr("transform","translate(-21.123927,27.017475")
+        d3.select("#leftEye")
+        .transition()
+        .duration(500)
+        .style("margin-right","0px")
+        $("#rightEye").animate({"opacity":0},500)
+        interpolator = flubber.combine([start,start], single, { single: true });
+        singleSprite.joined = true;
+        d3.select(".inner")
+        .selectAll("path")
+        .datum({start,start})
+        .transition()
+        .duration(1000)
+        .attrTween("d", function() { return interpolator; })
+        .on("end",d3=>{
+            $("#singleInner").animate({"opacity":"100%"},1500).css({"right":"10px","bottom":"100px"});
+        }) 
+        }
+    }
+}
 
 function fullscreen() {
     var isInFullScreen = (document.fullscreenElement && document.fullscreenElement !== null) ||
