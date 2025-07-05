@@ -1,5 +1,5 @@
 var settings = {
-    nodejs:false,
+    nodejs:true,
     color:0,
     blinking:true,
     showControls:true,
@@ -8,7 +8,7 @@ var settings = {
     clickOnEyes:true,
     maskOpacity:100,
     columnOpacity:120,
-    blinkInterval:50,
+    blinkInterval:80,
     blinkDuration:[1000,2500],
     blinkPlusMinus:10,
     blinkList:['base'] 
@@ -36,6 +36,7 @@ var emotions = {
         })
         $("#controls").append($("<button class='fullscreen'>fullscreen</button>"))
         $("#controls").append($("<button class='hideControls'>hide</button>"))
+        $("#controls").append($("<button class='setColor'>color</button>"))
 
         this.blink.check()
     },
@@ -86,6 +87,7 @@ let blink = {
         // TODO: fix blink duration
         if(on){ 
             emotion = 'blink'
+            data.blink=1;
             data.callback={
                 func:function(p){
                     console.log("callback")
@@ -95,6 +97,7 @@ let blink = {
             }
             data.duration=settings.blinkDuration[0];
         }else{
+            data.blink=2;
             emotion=emotions.current
             data.duration=settings.blinkDuration[1];
            this.setDuration(); 
@@ -138,9 +141,15 @@ let blink = {
    list:['base']
     
 }
+var setColor = function(col){
+    containerFilter = $(".crt").css("filter").split(" ");
+        containerFilter.unshift("hue-rotate("+col+"deg)");
+        console.log(containerFilter.join(" "))
+        $(".container").css({"filter":containerFilter.join(" ")},1500);
+
+}
 var init = function(){
     // innerFilter = ["drop-shadow(rgb(255, 0, 0) 0px 0px 8.35729px)", "blur(0.394661px)"]
-    containerFilter = $(".crt").css("filter").split(" ");
     if(!settings.showControls) $("#controls").hide();
     emotions.init();
     blink.init();
@@ -152,9 +161,7 @@ var init = function(){
         emotions.array.push(id);
     })
     if(settings.color){
-        containerFilter.unshift("hue-rotate("+settings.color+"deg)");
-        // $(".container").css("filter","hue-rotate("+settings.color+"deg)");
-        $(".container").css("filter",containerFilter.join(" "));
+        setColor(settings.color)
     }
 }
 init();
@@ -174,6 +181,9 @@ if(settings.nodejs){
 
 $('.hideControls').click(function () {
     $('#controls').hide("slow").then().addClass("hidden");
+})
+$('.setColor').click(function () {
+    setColor(Math.floor(Math.random()*360));
 })
 $('.fullscreen').click(function () {
     fullscreen();
@@ -215,11 +225,12 @@ $(".inner").append(rightEye)
 animateDefaults = {
     duration:1500,
     update:true,
+    blink:0,
     callback:{func:function(p){console.log("blank")},params:{}}
 }
 function animate(selectors, target,dat={}) {
     dat = $.extend({},animateDefaults,dat);
-    console.log('>>animate',target,dat)
+    // console.log('>>animate',target,dat)
 //     data.dutation=dat.duration||2500;
 //     data.update=dat.update||true;
 // //    data = dat; 
@@ -232,6 +243,20 @@ function animate(selectors, target,dat={}) {
     }
     let n = dat.callback.params;
    let v = dat.callback.func; 
+   if(dat.blink==1){
+    // $("#leftEye").delay(500).animate({"margin-right":"0px"},{duration:500,queue:false});
+    $(".eye").delay(700).animate({"margin-top":"15px","margin-right":"15px"},{duration:300,queue:false})
+    // $(".eye").each(function(){
+    // // $(this).animate({"top":"10px"},dat.duration/4)
+    // })
+   }else if(dat.blink==2){
+    // $("#leftEye").animate({"margin-right":"20px"},{duration:100,queue:false})
+    $(".eye").animate({"margin-top":"5px","margin-right":"17px"},{duration:200,queue:false,complete:function(){
+        $(this).animate({"margin-top":"0px","margin-right":"20px"},{duration:700,queue:false})
+    }})
+    // $(".eye").animate({"top":"0px"},100);
+    
+   }
     d3
         .select(".inner")
         .selectAll("path")
@@ -288,6 +313,34 @@ const t = d3.interval(() => {
         }
     }
 }, 150);
+function wobble(single=false,loop=true){
+    console.log('wobble')
+    let direction=[Math.floor(Math.random()*4)];
+    let dirs = ["left","right","top","bottom"];
+    let style = {};
+    let ammount = Math.floor(Math.random()*30)+"px";
+    if(single) ammount=ammount/2;
+    $(dirs).each(function(i){
+        let d = dirs[i]
+        if(i==direction){
+            style[d]=ammount;
+        }else{
+            style[d]="0px";
+        }
+    })
+   let duration = Math.floor(Math.random()*2500); 
+    sel = ".inner";
+    if(single) sel = "#leftEye"
+    d3.select(sel)
+    .transition()
+    .duration(4500)
+    .styles(style)
+    .on("end",duration => {
+        wobble(single)
+    });
+}
+wobble();
+wobble(true);
 
 function fullscreen() {
     var isInFullScreen = (document.fullscreenElement && document.fullscreenElement !== null) ||

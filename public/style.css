@@ -3,7 +3,8 @@ body {
     background-color: black;
     margin: 0;
     padding: 0;
-    /* overflow: hidden; */
+    /* filter: url(#kill); */
+    overflow: hidden;
 }
 
 .container {
@@ -18,8 +19,8 @@ body {
 }
 
 @keyframes example {
-    from {filter: drop-shadow(0 0 10px red),blur(0.7px);}
-    to {filter: drop-shadow(0 0 6px red) blur(0.1px);}
+    from {filter: drop-shadow(0 0 10px red),blur(0.9px);}
+    to {filter: drop-shadow(0 0 6px red) blur(0.3px);}
   }
 
 .inner {
@@ -28,6 +29,7 @@ body {
     /* border:2px solid white; */
     text-align: center;
     display: flex;
+    position:relative;
     /* justify-content: space-around; */
     align-items: center;
     text-align: center;
@@ -41,7 +43,9 @@ body {
 }
 #leftEye{
     margin-right:20px;
-
+}
+.eye{
+    position:relative;
 }
 .inner svg {
     display: inline-block;
@@ -63,6 +67,7 @@ path {
 }
 
 #rightEye {
+    margin-right:0px!important;
     transform: scaleX(-1);
 }
 

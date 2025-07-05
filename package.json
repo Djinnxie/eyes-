@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Djinnxie/eyes-#readme",
   "dependencies": {
     "express": "^5.1.0",
-    "express-sse": "^1.0.0"
+    "express-sse": "^1.0.0",
+    "string-replace-middleware": "^1.1.0"
   }
 }
