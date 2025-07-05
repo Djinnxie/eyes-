@@ -1,7 +1,9 @@
-# ROBOT EYES
+# ^_^  ROBOT EYES O_O
+[![This project is - AI free](https://img.shields.io/badge/This_project_is-AI_free-2ea44f)](https://) 
+
 **Note:** *we threw this together in a night because we couldnt sleep and then cleaned it up a tiny bit for sharing. excuse the mess*
 
-An HTML-based project for animating expressions by morphing between SVGs. it can be run with nodejs for controlling it via a web endpoint or standalone
+An HTML-based project for animating expressions by morphing between SVGs. it can be run with nodejs for controlling it via a web endpoint or standalone. intended to run on an OLED display inside a robot visor
 
 ![glowing red eyes](Doc/img/eyes.gif)
 
@@ -30,8 +32,9 @@ node i express-SSE
 - change the data-button to whatever you want to appear on the button
 
 ### Controlling
-if you are using the nodejs version, you can control it by navigating to `http://[local ip]:[port]/API/set/[emotion]`   
-eg: `http://127.0.0.1:3000/API/set/shock`
+if you are using the nodejs version, you can control it by pinging `http://[local ip]:[port]/API/set/[emotion]`   
+eg: `http://127.0.0.1:3000/API/set/shock`  
+or visiting `http://[local ip]:[port]/control.html` for an interface with buttons
 
 ### Settings
 settings are at the top of `public/main.js`
@@ -45,3 +48,22 @@ settings are at the top of `public/main.js`
 **clickOnEyes**[true] - enables clicking on the left eye for full screen and the right eye for a random emotion
 **maskOpacity**[true] - change the flicker amount of the crt mask
 **columnOpacity**[true] - change the flicker amount of the crt columns
+
+### TODO
+---
+- add settings for shake amount
+- add color transition
+- more effects
+    - chromatic abboration? 
+    - crt bevel?
+- update docs, especially `adding svgs`
+
+
+
+### changelog
+---
+#### 6/7/26
+- added random shake
+- added json for svgs, multiple sprite sets, dynamic buttons for interface
+- color selection
+- blinking animation
