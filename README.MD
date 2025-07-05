@@ -61,6 +61,13 @@ settings are at the top of `public/main.js`
 - extra marks - eg: blushing, frowning
 - text scrolling
 - display arbitrary pictures
+- custom animations/settings per expression
+- chaining emotes. go to x emote after y seconds/animation completes
+- finish per-eye controls
+- glitching out percentage
+- special crashing/rebooting emote
+- loading emote JSON if running in non-node mode
+- automatic node detection
 
 
 
