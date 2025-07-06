@@ -6,6 +6,54 @@ body {
     /* filter: url(#kill); */
     overflow: hidden;
 }
+@font-face {
+    font-family: 'unifont'; /*a name to be used later*/
+    src: url('assets/Unifontexmono.ttf'); /*URL to font*/
+}
+#fontTest {
+	font-family: unifont;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+    width:80%;
+    height:70%;
+    /* border:2px solid green; */
+
+    overflow:hidden;
+   mix-blend-mode: hue;
+   /* mix-blend-mode: soft-light; */
+   /* z-index: 10; */
+  /* transform:scale(50%);  */
+    filter: hue-rotate(76deg);
+    /* ` blur(1px); */
+}
+.invert{
+    color:green;
+    /* background-color: black; */
+    filter:blur(1px) ;
+}
+/* #fontTest table, */
+ .ft {
+    position:absolute;
+    table-layout: fixed;
+    /* font-weight:bold; */
+    /* top:0px;
+    left:0px; */
+    color:red;
+}
+/* #fontTest td, */
+ .ftes{
+	font-size:  19px;
+    width:      19px;
+    min-width:  19px;
+    height:     19px;
+    display:table-cell;
+    text-align: center;
+    text-overflow: clip;
+   overflow:hidden; 
+    /* border:2px solid red; */
+}
+
 
 .container {
     width: 100vw;
