@@ -20,8 +20,8 @@ body {
     /* border:2px solid green; */
 
     overflow:hidden;
-   mix-blend-mode: hue;
-   /* mix-blend-mode: soft-light; */
+   /* mix-blend-mode: hue; */
+   mix-blend-mode: darken;
    /* z-index: 10; */
   /* transform:scale(50%);  */
     filter: hue-rotate(76deg);
@@ -43,10 +43,12 @@ body {
 }
 /* #fontTest td, */
  .ftes{
-	font-size:  19px;
-    width:      19px;
-    min-width:  19px;
-    height:     19px;
+	font-size:  22px;
+    /* font-weight: bolder; */
+    text-shadow: 1px 1px 1px red;
+    width:      22px;
+    min-width:  22px;
+    height:     22px;
     display:table-cell;
     text-align: center;
     text-overflow: clip;
